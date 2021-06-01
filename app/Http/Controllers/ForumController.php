@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comentario;
 use App\Models\Forum;
+use App\Models\SubComentario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -12,12 +13,14 @@ class ForumController extends Controller
 {
     private Forum $forum;
     private Comentario $comentario;
+    private SubComentario $subComentario;
 
     public function __construct()
     {
         
         $this->forum = new Forum();
         $this->comentario = new Comentario();
+        $this->subComentario = new SubComentario();
     }
 
     public function index()
@@ -46,14 +49,22 @@ class ForumController extends Controller
     public function show($id)
     {
         $data = $this->forum->find($id);
-        $comentarios = $this->comentario->find($id)
+
+        $comentarios = $this->comentario  
         ->join('forums', 'forums.id', '=', 'comentarios.idforum')
-        ->select('forums.*', 'forums.id')
+        ->select('comentarios.*')
         ->where('idforum', '=', $id)
         ->get();
+
+        $subcomentario = $this->subComentario 
+        ->select('sub_comentarios.*')
+        ->where('idcomentario', '=', $comentarios->first()->id)
+        ->get();
+        
         return Inertia::render('Topicos', [
             'topicos' => $data,
-            'comentarios' => $comentarios
+            'comentarios' => $comentarios,
+            'subcomentarios' => $subcomentario
         ]);
     }
 

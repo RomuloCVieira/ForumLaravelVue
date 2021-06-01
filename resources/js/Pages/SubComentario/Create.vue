@@ -9,6 +9,9 @@
               class="form-control"
               rows="3"
             ></textarea>
+
+            {{idcomentario}}
+                        {{forum}}
           </div>
           <button type="submit" class="btn btn-dark">
             Adicionar novo comentario
@@ -18,7 +21,7 @@
   </form-layout>
 </template>
 <script>
-import FormLayout from "./FormLayout";
+import FormLayout from "../Forum/FormLayout";
 
 export default {
   components: {
@@ -28,20 +31,20 @@ export default {
   remember: "form",
 
   props: {
-    topicos: Object
-  }
+    params: Array
+  },
 
   data() {
     return {
       form: this.$inertia.form({
         comentario: null,
-      })
-    }
+      }),
+    };
   },
 
   methods: {
     store() {
-      this.form.post(this.route("items.store", this.topicos));
+      this.form.post(this.route("subs.store", this.params));
     }
   }
 };

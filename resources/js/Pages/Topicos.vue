@@ -8,11 +8,16 @@
              </inertia-link>
              </h4> 
              <ul v-for="comentario in comentarios" :key="comentario.id" class="list-group list-group-flush">
-                <li class="list-group-item">{{comentario.comentario}}</li>
-                <li class="list-group-item">teste</li>
-
+                <li class="list-group-item">
+                    {{comentario.comentario}} 
+                    <a v-if="$page.props.user" :href="route('subs.create', [comentario.id, topicos.id])">
+                        Reponder
+                    </a>
+                    <ul v-for="subcomentario in subcomentarios" :key="subcomentario.id" class="list-group list-group-flush">
+                        <li class="list-group-item">{{subcomentario.comentario}}</li>
+                    </ul>    
+                </li>
              </ul>
-
         </div>
         <!-- <ul v-for="topico in topicos" :key="topico.id">
             <li></li>
@@ -29,7 +34,8 @@ export default {
 
     props: {
         topicos: Object,
-        comentarios: Object
+        comentarios: Object,
+        subcomentarios: Object
     }
 }
 </script>
