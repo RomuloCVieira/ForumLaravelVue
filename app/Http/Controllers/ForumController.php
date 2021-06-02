@@ -23,16 +23,6 @@ class ForumController extends Controller
         $this->subComentario = new SubComentario();
     }
 
-    public function index()
-    {
-        $data = $this->forum
-              ->leftJoin('users', 'users.id', '=', 'idusuario')->get();
-            //   ->where('iusuario', '=', $request->user()->id );
-        return Inertia::render('Dashboard', [
-            'topicos' => $data
-        ]);
-    }
-
     public function create()
     {
         return Inertia::render('Forum/Create');
@@ -43,24 +33,21 @@ class ForumController extends Controller
         $data['idusuario'] = $request->user()->id;
         $data = array_merge($data, $request->all());
         $this->forum->create($data);
-        return Redirect::route('forum.index')->with('success', 'Tópico criado');
+        return Redirect::route('items.index')->with('success', 'Tópico criado');
     }
 
     public function show($id)
     {
         $data = $this->forum->find($id);
 
+        $subcomentario = $this->subComentario
+        ->join('users', 'users.id', '=', 'sub_comentarios.idusuario')
+        ->select('sub_comentarios.*', 'users.name')->get();
+
         $comentarios = $this->comentario  
-        ->join('forums', 'forums.id', '=', 'comentarios.idforum')
-        ->select('comentarios.*')
         ->where('idforum', '=', $id)
         ->get();
 
-        $subcomentario = $this->subComentario 
-        ->select('sub_comentarios.*')
-        ->where('idcomentario', '=', $comentarios->first()->id)
-        ->get();
-        
         return Inertia::render('Topicos', [
             'topicos' => $data,
             'comentarios' => $comentarios,
@@ -86,12 +73,12 @@ class ForumController extends Controller
 
         $data->update($dataForm);
 
-        return Redirect::route('forum.index')->with('success', 'Forum Atulizado.');
+        return Redirect::route('items.index')->with('success', 'Forum Atulizado.');
     }
 
     public function destroy($id)
     {
         $this->forum->destroy($id);
-        return Redirect::route('forum.index')->with('success', 'Tópico Excluido');
+        return Redirect::route('items.index')->with('success', 'Tópico Excluido');
     }
 }

@@ -1,9 +1,6 @@
 <template>
-  
- <header-layout></header-layout>
-  <div
-    class="py-12"
-  >
+  <header-layout></header-layout>
+  <div class="py-12">
     <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
       <inertia-link
         v-if="$page.props.user"
@@ -30,6 +27,9 @@
       </template>
     </div>
     <div class="container">
+      <div class="text-right">
+        <a href="/forum/create" class="btn btn-dark">Adicionar</a>
+      </div>
       <table class="table">
         <thead>
           <tr>
@@ -47,15 +47,28 @@
             <td>{{ topico.titulo }}</td>
             <td>{{ topico.mensagem }}</td>
             <td>{{ format_date(topico.created_at) }}</td>
-            <td>{{topico.name}}</td>
+            <td>{{ topico.name }}</td>
             <td>
               <div class="text-right">
-                <inertia-link
-                  class="btn btn-info"
-                  :href="route('forum.show', topico.id)"
-                >
-                  Visualizar
-                </inertia-link>
+                  <button v-if="$page.props.user"
+                    type="submit"
+                    @click="destroy(topico.id)"
+                    class="btn btn-danger mr-2"
+                  >
+                    Remover
+                  </button>
+                  <inertia-link v-if="$page.props.user"
+                    class="btn btn-success mr-2"
+                    :href="route('forum.edit', topico)"
+                  >
+                    Editar
+                  </inertia-link>
+                  <inertia-link
+                    class="btn btn-info"
+                    :href="route('forum.show', topico.id)"
+                  >
+                    Visualizar
+                  </inertia-link>
               </div>
             </td>
           </tr>

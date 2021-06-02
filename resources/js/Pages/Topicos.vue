@@ -10,22 +10,23 @@
              <ul v-for="comentario in comentarios" :key="comentario.id" class="list-group list-group-flush">
                 <li class="list-group-item">
                     {{comentario.comentario}} 
+                    
                     <a v-if="$page.props.user" :href="route('subs.create', [comentario.id, topicos.id])">
                         Reponder
                     </a>
-                    <ul v-for="subcomentario in subcomentarios" :key="subcomentario.id" class="list-group list-group-flush">
-                        <li class="list-group-item">{{subcomentario.comentario}}</li>
+                    <ul v-for="subcomentario in subcomentarios" :key="subcomentario.id" class="list-group list-group-flush ml-5">
+                        <li v-if="subcomentario.idcomentario === comentario.id" class="list-group-item">
+                            {{subcomentario.comentario}} - {{subcomentario.name}} {{ format_date(subcomentario.created_at) }}
+                        </li>
                     </ul>    
                 </li>
              </ul>
         </div>
-        <!-- <ul v-for="topico in topicos" :key="topico.id">
-            <li></li>
-        </ul> -->
     </div>
 </template>
 <script>
 import HeaderLayout from "@/Layouts/HeaderLayout";
+import moment from "moment";
 
 export default {
     components: {
@@ -36,6 +37,14 @@ export default {
         topicos: Object,
         comentarios: Object,
         subcomentarios: Object
+    },
+
+    methods: {
+        format_date(value) {
+            if (value) {
+                return moment(String(value)).format("H:MM D/M/Y");
+            }
+        }
     }
 }
 </script>

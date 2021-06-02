@@ -35,8 +35,8 @@ class ItemsController extends Controller
     {
         $data = $this->forum->find($id);
 
-        return Inertia::render('Forum/FormTopicos', [
-            'topicos' => $data
+        return Inertia::render('Comentario/Create', [
+            'params' => $data
         ]);
     }
 

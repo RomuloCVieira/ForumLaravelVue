@@ -10,6 +10,7 @@
             @submit.prevent="store"
             class="form-control"
             placeholder="Fulano"
+            required
           />
         </div>
         <div class="mb-3">
@@ -18,6 +19,7 @@
             v-model="form.mensagem"
             class="form-control"
             rows="3"
+            required
           ></textarea>
         </div>
         <button type="submit" class="btn btn-dark">Criar Tópico</button>

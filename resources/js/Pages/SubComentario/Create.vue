@@ -1,37 +1,35 @@
 <template>
-  <form-layout>
-    <template #formlayout>
-        <form @submit.prevent="store">
-          <div class="mb-3">
-            <label for="comentario" class="form-label">Comentário</label>
-            <textarea
-              v-model="form.comentario"
-              class="form-control"
-              rows="3"
-            ></textarea>
-
-            {{idcomentario}}
-                        {{forum}}
-          </div>
-          <button type="submit" class="btn btn-dark">
-            Adicionar novo comentario
-          </button>
-        </form>
+  <comentario-layout>
+    <template #form-comentario>
+      <form @submit.prevent="store">
+        <div class="mb-3">
+          <label for="comentario" class="form-label">Comentário</label>
+          <textarea
+            v-model="form.comentario"
+            class="form-control"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-dark">
+          Adicionar novo comentario
+        </button>
+      </form>
     </template>
-  </form-layout>
+  </comentario-layout>
 </template>
 <script>
-import FormLayout from "../Forum/FormLayout";
+import ComentarioLayout from "../../Layouts/ComentarioLayout";
 
 export default {
   components: {
-    FormLayout,
+    ComentarioLayout,
   },
 
   remember: "form",
 
   props: {
-    params: Array
+    params: Array,
   },
 
   data() {
@@ -45,7 +43,7 @@ export default {
   methods: {
     store() {
       this.form.post(this.route("subs.store", this.params));
-    }
-  }
+    },
+  },
 };
 </script>

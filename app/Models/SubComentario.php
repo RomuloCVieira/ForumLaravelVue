@@ -9,5 +9,5 @@ class SubComentario extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['idcomentario', 'comentario'];
+    protected $fillable = ['idcomentario', 'idusuario', 'comentario'];
 }

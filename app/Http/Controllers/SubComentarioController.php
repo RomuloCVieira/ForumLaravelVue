@@ -28,7 +28,8 @@ class SubComentarioController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data['idusuario'] = $request->user()->id;
+        $data = array_merge($data, $request->all());
         $this->subcomentario->create($data);
         return redirect()->route('forum.show', ['forum' => $data['idforum']]);
     }
