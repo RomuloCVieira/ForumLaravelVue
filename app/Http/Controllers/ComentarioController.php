@@ -8,7 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 
-class ItemsController extends Controller
+class ComentarioController extends Controller
 {
     private $forum;
     private $comentarios;
@@ -17,18 +17,6 @@ class ItemsController extends Controller
     {
         $this->forum = new Forum();
         $this->comentarios = new Comentario();
-    }
-
-    public function index()
-    {
-        $data = $this->forum
-        ->join('users', 'users.id', '=', 'forums.idusuario')
-        ->select('forums.*', 'users.name')
-        ->get();
-
-        return Inertia::render('Welcome', [
-            'topicos' => $data
-        ]);
     }
 
     public function edit($id)
@@ -43,6 +31,7 @@ class ItemsController extends Controller
     public function store(Request $request, )
     {
         $data['idforum'] = $request->all()['id'];
+        $data['idusuario'] = $request->user()->id;
         $data = array_merge($data, $request->all());
         $this->comentarios->create($data);
         return redirect()->route('forum.show', ['forum' => $data['idforum']]);

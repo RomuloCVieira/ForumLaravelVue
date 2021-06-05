@@ -9,5 +9,5 @@ class Comentario extends Model
 {
     use HasFactory;
     
-    protected $fillable = ['idforum', 'comentario'];
+    protected $fillable = ['idforum', 'idusuario', 'comentario'];
 }

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
-class ForumController extends Controller
+class TopicoController extends Controller
 {
     private Forum $forum;
     private Comentario $comentario;
@@ -21,6 +21,18 @@ class ForumController extends Controller
         $this->forum = new Forum();
         $this->comentario = new Comentario();
         $this->subComentario = new SubComentario();
+    }
+
+    public function index()
+    {
+        $data = $this->forum
+        ->join('users', 'users.id', '=', 'forums.idusuario')
+        ->select('forums.*', 'users.name')
+        ->get();
+
+        return Inertia::render('Welcome', [
+            'topicos' => $data
+        ]);
     }
 
     public function create()
@@ -45,6 +57,8 @@ class ForumController extends Controller
         ->select('sub_comentarios.*', 'users.name')->get();
 
         $comentarios = $this->comentario  
+        ->join('users', 'users.id', '=', 'comentarios.idusuario')  
+        ->select('comentarios.*', 'users.name')
         ->where('idforum', '=', $id)
         ->get();
 

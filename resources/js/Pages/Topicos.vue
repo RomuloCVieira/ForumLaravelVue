@@ -1,5 +1,5 @@
 <template>
-    <header-layout></header-layout>
+    <app-layout>
     <div class="container py-12">
         <div>
             <h4>{{topicos.titulo}}              
@@ -9,7 +9,7 @@
              </h4> 
              <ul v-for="comentario in comentarios" :key="comentario.id" class="list-group list-group-flush">
                 <li class="list-group-item">
-                    {{comentario.comentario}} 
+                    {{comentario.comentario}} - {{comentario.name}} {{ format_date(comentario.created_at) }}
                     
                     <a v-if="$page.props.user" :href="route('subs.create', [comentario.id, topicos.id])">
                         Reponder
@@ -23,14 +23,18 @@
              </ul>
         </div>
     </div>
+    </app-layout>
 </template>
 <script>
 import HeaderLayout from "@/Layouts/HeaderLayout";
+import AppLayout from "@/Layouts/AppLayout";
+
 import moment from "moment";
 
 export default {
     components: {
-        HeaderLayout
+        HeaderLayout,
+        AppLayout
     },
 
     props: {
